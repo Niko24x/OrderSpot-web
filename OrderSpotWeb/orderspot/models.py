@@ -95,7 +95,7 @@ class EncabezadoPedido(models.Model):
 	nombre_factura = models.CharField(max_length=150)
 	direccion_factura = models.CharField(max_length=150)
 	direccion_entrega = models.CharField(max_length=150)
-	telefono_cliente = models.PositiveSmallIntegerField()
+	telefono_cliente = models.PositiveIntegerField()
 	nombre_cliente = models.CharField(max_length=150)
 	codigo_de_entrada = models.CharField(max_length=150)
 	notas_adicionales = models.TextField()
@@ -105,8 +105,8 @@ class EncabezadoPedido(models.Model):
 		return (str(self.pk) + " - " + str(self.usuario) + " - " + self.nit + " - " + str(self.fecha_solicitud))
 
 class DetallePedido(models.Model):
-	pedido = models.ForeignKey(EncabezadoPedido, on_delete=models.PROTECT)
-	producto = models.ForeignKey(Producto, on_delete=models.PROTECT)
+	pedido = models.ForeignKey(EncabezadoPedido, related_name='detalles', on_delete=models.PROTECT)
+	producto = models.ForeignKey(Producto, related_name='productos', on_delete=models.PROTECT)
 	cantidad = models.DecimalField(max_digits=7, decimal_places=0)
 	precio_individual = models.DecimalField(max_digits=7, decimal_places=2)
 
