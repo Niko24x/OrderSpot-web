@@ -26,6 +26,13 @@ class Base64ImageField(serializers.ImageField):
 		# 	print('test')
 		return encoded_string
 
+class DetallePedidoSerializer(serializers.ModelSerializer):
+	pedido = serializers.StringRelatedField(read_only=True)
+	producto = serializers.StringRelatedField(read_only=True)
+	
+	class Meta:
+		model = Track
+		fields = ['pedido', 'producto', 'cantidad','precio_individual']
 
 
 class PedidoSerializer(serializers.ModelSerializer):
@@ -34,6 +41,14 @@ class PedidoSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = EncabezadoPedido
 		fields = ['usuario', 'fecha_solicitud', 'fecha_entrega', 'municipio', 'municipio', 'nit', 'nombre_factura', 'direccion_factura', 'direccion_entrega', 'telefono_cliente', 'nombre_cliente', 'codigo_de_entrada', 'notas_adicionales', 'estado', 'detalles']
+
+
+	def create(self, validated_data):
+		detalles_data = validated_data.pop('detalle')
+		pedido = EncabezadoPedido.objects.create(**validated_data)
+		for detalle_data in detalles_data:
+			DetallePedido.objects.create(pedido=pedido, **detalle_data)
+		return pedido
 
 
 class ProductoSerializer(serializers.ModelSerializer):
