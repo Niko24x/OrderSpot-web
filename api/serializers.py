@@ -29,9 +29,9 @@ class Base64ImageField(serializers.ImageField):
 class DetallePedidoSerializer(serializers.ModelSerializer):
 	pedido = serializers.StringRelatedField(read_only=True)
 	producto = serializers.StringRelatedField(read_only=True)
-	
+
 	class Meta:
-		model = Track
+		model = DetallePedido
 		fields = ['pedido', 'producto', 'cantidad','precio_individual']
 
 

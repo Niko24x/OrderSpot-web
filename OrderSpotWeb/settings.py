@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
+import pymysql
 from decouple import config, Csv
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -84,15 +85,19 @@ WSGI_APPLICATION = 'OrderSpotWeb.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
-
 DATABASES = {
 	'default': {
 		'ENGINE': 'django.db.backends.mysql',
-		'NAME': config('DB_NAME'),
-		'USER': config('DB_USER'),
-		'PASSWORD': config('DB_PASSWORD'),
-		'HOST': config('DB_HOST'),
-		'PORT': '',
+		'NAME': 'orderspot',
+		'USER': 'orderspot',
+		'PASSWORD': 'ksum1bzk6so9h5oy',
+		'HOST': 'db-chapindev-prod-do-user-4815629-0.a.db.ondigitalocean.com',
+		'PORT': '25060',
+		'OPTIONS': {
+			'ssl': {
+				'ssl-ca': '/ca/ca-certificate.crt'
+				}
+			}
 	}
 }
 
@@ -146,7 +151,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = '/staticfiles/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 STATICFILES_DIRS = [
@@ -157,3 +162,7 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 AUTH_USER_MODEL = 'usuarios.Usuario'
+
+pymysql.version_info = (1, 4, 2, "final", 0)
+pymysql.install_as_MySQLdb()
+

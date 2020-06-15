@@ -9,7 +9,8 @@ from orderspot.models import *
 #3rd
 from rest_framework import generics
 from django_filters import rest_framework as filters
-from rest_framework.permissions import IsAdminUser
+from rest_framework.permissions import IsAdminUser, IsAuthenticated
+from rest_framework.authentication import SessionAuthentication, TokenAuthentication
 
 # Create your views here.
 
@@ -22,7 +23,15 @@ class PedidoList(generics.ListAPIView):
 	"""
 	queryset = EncabezadoPedido.objects.all()
 	serializer_class = PedidoSerializer
-	#permission_classes = []#definir
+	permission_classes = [IsAuthenticated]
+	authentication_classes = [TokenAuthentication, SessionAuthentication]
+
+	def get_queryset(self):
+		"""
+		Retorna pedidos del usuario autenticado
+		"""
+		user = self.request.user
+		return EncabezadoPedido.objects.filter(usuario=user)
 
 class PedidoFilter(filters.FilterSet):
 	"""
@@ -44,6 +53,8 @@ class PedidoListFiltered(generics.ListAPIView):
 	"""
 	serializer_class = PedidoSerializer
 	filterset_class = PedidoFilter
+	permission_classes = [IsAuthenticated]
+	authentication_classes = [TokenAuthentication, SessionAuthentication]
 
 	def get_queryset(self):
 		"""
@@ -58,6 +69,8 @@ class PedidoPartialUpdate(generics.UpdateAPIView):
 	"""
 	queryset = EncabezadoPedido.objects.all()
 	serializer_class = PedidoSerializer
+	permission_classes = [IsAuthenticated]
+	authentication_classes = [TokenAuthentication, SessionAuthentication]
 
 	def patch(self, request, pk):
 		model_object = EncabezadoPedido.objects.get(pk=pk)
@@ -85,9 +98,6 @@ class ProductoList(generics.ListAPIView):
 	"""
 	queryset = Producto.objects.all()
 	serializer_class = ProductoSerializer
-	#permission_classes = []#definir
+	permission_classes = [IsAuthenticated]
 	filterset_class = ProductoFilter
-
-#-------------- PEDIDOS -----------------#
-
-
+	authentication_classes = [TokenAuthentication, SessionAuthentication]
