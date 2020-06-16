@@ -26,7 +26,7 @@ SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', cast=bool)
-
+PRODUCTION = config('PRODUCTION', cast=bool)
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv())
 
 
@@ -85,21 +85,40 @@ WSGI_APPLICATION = 'OrderSpotWeb.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
-DATABASES = {
-	'default': {
-		'ENGINE': 'django.db.backends.mysql',
-		'NAME': 'orderspot',
-		'USER': 'orderspot',
-		'PASSWORD': 'ksum1bzk6so9h5oy',
-		'HOST': 'db-chapindev-prod-do-user-4815629-0.a.db.ondigitalocean.com',
-		'PORT': '25060',
-		'OPTIONS': {
-			'ssl': {
-				'ssl-ca': '/ca/ca-certificate.crt'
+if PRODUCTION:
+	DATABASES = {
+		'default': {
+			'ENGINE': 'django.db.backends.mysql',
+			'NAME': config('DB_NAME'),
+			'USER': config('DB_NAME'),
+			'PASSWORD': config('DB_PASSWORD'),
+			'HOST': config('DB_HOST'),
+			'PORT': config('DB_PORT', cast=int),
+			'OPTIONS': {
+				'ssl': {
+					'ssl-ca': '/ca/ca-certificate.crt'
 				}
 			}
+		}
 	}
-}
+else:
+	DATABASES = {
+		'default': {
+			'ENGINE': 'django.db.backends.mysql',
+			'NAME': config('DB_NAME'),
+			'USER': config('DB_NAME'),
+			'PASSWORD': config('DB_PASSWORD'),
+			'HOST': config('DB_HOST'),
+			'PORT': config('DB_PORT', cast=int),
+			'OPTIONS': {
+				'ssl': {
+					'ssl-ca': '/ca/ca-certificate.crt'
+				}
+			}
+		}
+	}
+
+
 
 # Rest Authentication
 
@@ -109,9 +128,9 @@ REST_FRAMEWORK = {
 		'rest_framework.authentication.SessionAuthentication',
 	],
 	'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
-    'PAGE_SIZE': 50,
-    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
-    #'DEFAULT_VERSIONING_CLASS': 'rest_framework.versioning.NamespaceVersioning'
+	'PAGE_SIZE': 50,
+	'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
+	#'DEFAULT_VERSIONING_CLASS': 'rest_framework.versioning.NamespaceVersioning'
 }
 
 
