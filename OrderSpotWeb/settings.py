@@ -90,7 +90,7 @@ if PRODUCTION:
 		'default': {
 			'ENGINE': 'django.db.backends.mysql',
 			'NAME': config('DB_NAME'),
-			'USER': config('DB_NAME'),
+			'USER': config('DB_USER'),
 			'PASSWORD': config('DB_PASSWORD'),
 			'HOST': config('DB_HOST'),
 			'PORT': config('DB_PORT', cast=int),
@@ -106,7 +106,7 @@ else:
 		'default': {
 			'ENGINE': 'django.db.backends.mysql',
 			'NAME': config('DB_NAME'),
-			'USER': config('DB_NAME'),
+			'USER': config('DB_USER'),
 			'PASSWORD': config('DB_PASSWORD'),
 			'HOST': config('DB_HOST'),
 			'PORT': config('DB_PORT', cast=int),
@@ -182,6 +182,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 AUTH_USER_MODEL = 'usuarios.Usuario'
 
-pymysql.version_info = (1, 4, 2, "final", 0)
-pymysql.install_as_MySQLdb()
+if PRODUCTION:
+	pymysql.version_info = (1, 4, 2, "final", 0)
+	pymysql.install_as_MySQLdb()
 

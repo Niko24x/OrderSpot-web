@@ -12,7 +12,6 @@ urlpatterns = [
 	path('pedidos/', PedidoList.as_view(), name='pedidos'),
 	path('productos/', ProductoList.as_view(), name='productos'),
 	path('pedido/<pk>/', PedidoEstadoUpdate.as_view(), name='pedido_update'),
-	path('pedidos_filtrados/', PedidoListFiltered.as_view(), name='pedidos_filtrados'),
-	path('detallepedido/', PedidoDetalle.as_view(), name='detallepedido'),
+	path('detallepedido/<pk>/', PedidoDetalle.as_view(), name='detallepedido')
 
 ]

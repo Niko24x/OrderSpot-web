@@ -29,7 +29,7 @@ class Base64ImageField(serializers.ImageField):
 class DetallePedidoSerializer(serializers.ModelSerializer):
 	pedido = serializers.PrimaryKeyRelatedField(read_only=True)
 	producto = serializers.PrimaryKeyRelatedField(read_only=True)
-
+	
 	class Meta:
 		model = DetallePedido
 		fields = ['pk', 'pedido', 'producto', 'cantidad','precio_individual']
@@ -55,17 +55,17 @@ class PedidoSerializer(serializers.ModelSerializer):
 		queryset = DetallePedido.objects.filter(pedido= obj)
 		return [DetallePedidoSerializer(m).data for m in queryset]
 
+
+
+
 class ProductoSerializer(serializers.ModelSerializer):
 	#pendiente
 	#imagen = Base64ImageField()
-	categoria = serializers.SerializerMethodField()
+	categoria = serializers.StringRelatedField(read_only=True)
 
 	class Meta:
 		model = Producto
-		fields = ['pk','nombre', 'descripcion', 'precio', 'imagen', 'sku', 'categoria', 'estado']
+		fields = ['pk', 'nombre', 'descripcion', 'precio', 'imagen', 'sku', 'categoria', 'estado']
 
-	def get_categoria(self, obj):
-		"""obj es una instancia de categoria. Retorna una lista de diccionarios"""
-		queryset = Categoria.objects.filter(pedido= obj)
-		return [DetallePedidoSerializer(m).data for m in queryset]
+
 
