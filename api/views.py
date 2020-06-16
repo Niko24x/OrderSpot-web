@@ -17,7 +17,7 @@ from rest_framework.authentication import SessionAuthentication, TokenAuthentica
 ################ API ##########################
 #-------------- PEDIDOS -----------------#
 
-class PedidoList(generics.ListAPIView):
+class PedidoList(generics.ListCreateAPIView):
 	"""
 		API devuelve pedidos en general
 	"""
@@ -80,22 +80,17 @@ class PedidoEstadoUpdate(generics.UpdateAPIView):
 			return JsonResponse(serializer.data, status=201)
 		return JsonResponse(data="wrong parameters", status=400)
 
-class PedidoDetalle(generics.RetrieveUpdateDestroyAPIView):
+class PedidoDetalle(generics.ListCreateAPIView):
+    queryset = DetallePedido.objects.all()
+    serializer_class = DetallePedidoSerializer
+
+class PedidoDetalle2(generics.RetrieveUpdateDestroyAPIView):
 	"""
 		Retorna el detalle y actualiza o quita
 	"""
 	queryset = DetallePedido.objects.all()
 	serializer_class = DetallePedidoSerializer
 
-	def patch(self, request, pk):
-		pedido = EncabezadoPedido.objects.get(pk=pedido)
-		detalle = DetallePedido.objects.get(pk=pk)
-		serializer = DetallePedidoSerializer(detalle, data=request.data, partial=True) # set partial=True to update a data partially
-
-		if serializer.is_valid():
-			serializer.save()
-			return JsonResponse(serializer.data, status=201)
-		return JsonResponse(data="wrong parameters", status=400)
 
 #-------------- PRODUCTOS -----------------#
 class ProductoFilter(filters.FilterSet):

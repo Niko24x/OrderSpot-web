@@ -27,8 +27,12 @@ class Base64ImageField(serializers.ImageField):
 		return encoded_string
 
 class DetallePedidoSerializer(serializers.ModelSerializer):
-	pedido = serializers.PrimaryKeyRelatedField(read_only=True)
-	producto = serializers.PrimaryKeyRelatedField(read_only=True)
+	def __init__(self, *args, **kwargs):
+		many = kwargs.pop('many', True)
+		super(DetallePedidoSerializer, self).__init__(many=many, *args, **kwargs)
+		
+	pedido = serializers.PrimaryKeyRelatedField(queryset=EncabezadoPedido.objects.all())
+	producto = serializers.PrimaryKeyRelatedField(queryset=Producto.objects.all())
 
 	class Meta:
 		model = DetallePedido
@@ -44,10 +48,13 @@ class PedidoSerializer(serializers.ModelSerializer):
 
 
 	def create(self, validated_data):
-		detalles_data = validated_data.pop('detalle')
+		print (validated_data)
 		pedido = EncabezadoPedido.objects.create(**validated_data)
-		for detalle_data in detalles_data:
-			DetallePedido.objects.create(pedido=pedido, **detalle_data)
+		detalles_data = validated_data.pop('detalles')
+
+		if detalles_data:
+			for detalle_data in detalles_data:
+				DetallePedido.objects.create(pedido=pedido, **detalle_data)
 		return pedido
 
 	def get_detalles(self, obj):
