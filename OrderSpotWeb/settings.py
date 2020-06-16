@@ -29,7 +29,6 @@ DEBUG = config('DEBUG', cast=bool)
 PRODUCTION = config('PRODUCTION', cast=bool)
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv())
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -93,7 +92,7 @@ if PRODUCTION:
 			'USER': config('DB_USER'),
 			'PASSWORD': config('DB_PASSWORD'),
 			'HOST': config('DB_HOST'),
-			'PORT': config('DB_PORT', cast=int),
+			'PORT': config('DB_PORT'),
 			'OPTIONS': {
 				'ssl': {
 					'ssl-ca': '/ca/ca-certificate.crt'
@@ -109,12 +108,7 @@ else:
 			'USER': config('DB_USER'),
 			'PASSWORD': config('DB_PASSWORD'),
 			'HOST': config('DB_HOST'),
-			'PORT': config('DB_PORT', cast=int),
-			'OPTIONS': {
-				'ssl': {
-					'ssl-ca': '/ca/ca-certificate.crt'
-				}
-			}
+			'PORT': config('DB_PORT'),
 		}
 	}
 
