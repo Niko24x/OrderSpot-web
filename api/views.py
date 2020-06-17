@@ -22,7 +22,7 @@ class PedidoList(generics.ListCreateAPIView):
 		API devuelve pedidos en general
 	"""
 	queryset = EncabezadoPedido.objects.all()
-	serializer_class = PedidoSerializer
+	serializer_class = PedidoListSerializer
 	permission_classes = [IsAuthenticated]
 	authentication_classes = [TokenAuthentication, SessionAuthentication]
 
@@ -32,6 +32,16 @@ class PedidoList(generics.ListCreateAPIView):
 		"""
 		user = self.request.user
 		return EncabezadoPedido.objects.filter(usuario=user)
+
+class PedidoCreate(generics.ListCreateAPIView):
+	"""
+		API devuelve pedidos en general
+	"""
+	queryset = EncabezadoPedido.objects.all()
+	serializer_class = PedidoSerializer
+	permission_classes = [IsAuthenticated]
+	authentication_classes = [TokenAuthentication, SessionAuthentication]
+
 
 class PedidoFilter(filters.FilterSet):
 	"""
