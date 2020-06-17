@@ -17,32 +17,6 @@ from rest_framework.authentication import SessionAuthentication, TokenAuthentica
 ################ API ##########################
 #-------------- PEDIDOS -----------------#
 
-class PedidoList(generics.ListCreateAPIView):
-	"""
-		API devuelve pedidos en general
-	"""
-	queryset = EncabezadoPedido.objects.all()
-	serializer_class = PedidoListSerializer
-	permission_classes = [IsAuthenticated]
-	authentication_classes = [TokenAuthentication, SessionAuthentication]
-
-	def get_queryset(self):
-		"""
-		Retorna pedidos del usuario autenticado
-		"""
-		user = self.request.user
-		return EncabezadoPedido.objects.filter(usuario=user)
-
-class PedidoCreate(generics.ListCreateAPIView):
-	"""
-		API devuelve pedidos en general
-	"""
-	queryset = EncabezadoPedido.objects.all()
-	serializer_class = PedidoSerializer
-	permission_classes = [IsAuthenticated]
-	authentication_classes = [TokenAuthentication, SessionAuthentication]
-
-
 class PedidoFilter(filters.FilterSet):
 	"""
 		Filtro para pedidos
@@ -53,17 +27,24 @@ class PedidoFilter(filters.FilterSet):
 	nit = filters.CharFilter(lookup_expr='icontains')
 
 	class Meta:
-		model = Producto
+		model = EncabezadoPedido
 		fields = ['nombre_factura', 'estado', 'nit' ]
 
-class PedidoListFiltered(generics.ListAPIView):
+	def get_queryset(self):
+		"""
+		Retorna pedidos del usuario autenticado
+		"""
+		user = self.request.user
+		return EncabezadoPedido.objects.filter(usuario=user)
 
+class PedidoList(generics.ListCreateAPIView):
 	"""
-		API devuelve pedidos filtrado por usuario
+		API devuelve pedidos en general
 	"""
+	queryset = EncabezadoPedido.objects.all()
 	serializer_class = PedidoSerializer
-	filterset_class = PedidoFilter
 	permission_classes = [IsAuthenticated]
+	filterset_class = PedidoFilter
 	authentication_classes = [TokenAuthentication, SessionAuthentication]
 
 	def get_queryset(self):

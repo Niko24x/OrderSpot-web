@@ -19,18 +19,6 @@ class DetallePedidoSerializer(serializers.ModelSerializer):
 
 
 ##########################Pedidos##########################
-class PedidoListSerializer(serializers.ModelSerializer):
-	detalles = serializers.SerializerMethodField()
-
-	class Meta:
-		model = EncabezadoPedido
-		fields = ['pk', 'usuario', 'fecha_solicitud', 'fecha_entrega', 'municipio', 'municipio', 'nit', 'nombre_factura', 'direccion_factura', 'direccion_entrega', 'telefono_cliente', 'nombre_cliente', 'codigo_de_entrada', 'notas_adicionales', 'estado', 'detalles']
-
-	def get_detalles(self, obj):
-		"""obj es una instancia de pedido. Retorna una lista de diccionarios"""
-		queryset = DetallePedido.objects.filter(pedido= obj)
-		return [DetallePedidoSerializer(m).data for m in queryset]
-
 class PedidoSerializer(serializers.ModelSerializer):
 	detalles = DetallePedidoSerializer(many=True)
 	class Meta:
