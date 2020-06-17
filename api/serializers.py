@@ -26,20 +26,15 @@ class Base64ImageField(serializers.ImageField):
 		# 	print('test')
 		return encoded_string
 
-class DetallePedidoSerializer(serializers.ModelSerializer):
-	def __init__(self, *args, **kwargs):
-		many = kwargs.pop('many', True)
-		super(DetallePedidoSerializer, self).__init__(many=many, *args, **kwargs)
-		
-	pedido = serializers.PrimaryKeyRelatedField(queryset=EncabezadoPedido.objects.all())
+class DetallePedidoSerializer(serializers.ModelSerializer):		
 	producto = serializers.PrimaryKeyRelatedField(queryset=Producto.objects.all())
 
 	class Meta:
 		model = DetallePedido
-		fields = ['pk', 'pedido', 'producto', 'cantidad','precio_individual']
+		fields = ['pk', 'producto', 'cantidad','precio_individual']
 
 
-class PedidoSerializer(serializers.ModelSerializer):
+class PedidoListSerializer(serializers.ModelSerializer):
 	detalles = serializers.SerializerMethodField()
 
 	class Meta:
@@ -61,6 +56,22 @@ class PedidoSerializer(serializers.ModelSerializer):
 		"""obj es una instancia de pedido. Retorna una lista de diccionarios"""
 		queryset = DetallePedido.objects.filter(pedido= obj)
 		return [DetallePedidoSerializer(m).data for m in queryset]
+
+class PedidoSerializer(serializers.ModelSerializer):
+	detalles = DetallePedidoSerializer(many=True)
+	class Meta:
+		model = EncabezadoPedido
+		fields = ['pk', 'usuario', 'fecha_solicitud', 'fecha_entrega', 'municipio', 'municipio', 'nit', 'nombre_factura', 'direccion_factura', 'direccion_entrega', 'telefono_cliente', 'nombre_cliente', 'codigo_de_entrada', 'notas_adicionales', 'estado', 'detalles']
+
+
+	def create(self, validated_data):
+		detalles_data = validated_data.pop('detalles')
+		pedido = EncabezadoPedido.objects.create(**validated_data)
+
+		if detalles_data:
+			for detalle_data in detalles_data:
+				DetallePedido.objects.create(pedido=pedido, **detalle_data)
+		return pedido
 
 class ProductoSerializer(serializers.ModelSerializer):
 	#pendiente
