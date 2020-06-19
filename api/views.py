@@ -61,10 +61,10 @@ class DetallePedidoFilter(filters.FilterSet):
 		fields = ['pedido']
 
 class PedidoDetalle(generics.ListCreateAPIView):
-    queryset = DetallePedido.objects.all()
-    serializer_class = DetallePedidoSerializer
-    permission_classes = [IsAuthenticated]
-    filterset_class = DetallePedidoFilter
+	queryset = DetallePedido.objects.all()
+	serializer_class = DetallePedidoSerializer
+	permission_classes = [IsAuthenticated]
+	filterset_class = DetallePedidoFilter
 	authentication_classes = [TokenAuthentication, SessionAuthentication]
 
 
