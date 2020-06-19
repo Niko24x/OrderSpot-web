@@ -63,13 +63,6 @@ class PedidoEstadoUpdate(generics.UpdateAPIView):
 	permission_classes = [IsAuthenticated]
 	authentication_classes = [TokenAuthentication, SessionAuthentication]
 
-	def patch(self, request, pk):
-		model_object = EncabezadoPedido.objects.get(pk=pk)
-		serializer = PedidoSerializer(model_object, data=request.data, partial=True) # set partial=True to update a data partially
-		if serializer.is_valid():
-			serializer.save()
-			return JsonResponse(serializer.data, safe=False, status=201)
-		return JsonResponse(data="wrong parameters", status=400)
 
 class PedidoDetalle(generics.ListCreateAPIView):
     queryset = DetallePedido.objects.all()
