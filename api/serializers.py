@@ -17,16 +17,6 @@ class DetallePedidoSerializer(serializers.ModelSerializer):
 		model = DetallePedido
 		fields = ['pk', 'pedido', 'producto', 'cantidad','precio_individual']
 
-class DetallePedido2Serializer2(serializers.ModelSerializer):		
-	pedido = serializers.PrimaryKeyRelatedField(queryset=EncabezadoPedido.objects.all())
-	producto = serializers.PrimaryKeyRelatedField(queryset=Producto.objects.all())
-
-	class Meta:
-		model = DetallePedido
-		fields = ['pk', 'pedido', 'producto', 'cantidad','precio_individual']
-
-
-
 ##########################Pedidos##########################
 class PedidoSerializer(serializers.ModelSerializer):
 	detalles = DetallePedidoSerializer(many=True)

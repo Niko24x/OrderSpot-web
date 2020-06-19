@@ -54,7 +54,7 @@ class DetallePedidoFilter(filters.FilterSet):
 	"""
 		Filtro para pedidos
 	"""
-	pedido = filters.CharFilter(lookup_expr='icontains')
+	pedido = filters.NumberFilter()
 
 	class Meta:
 		model = DetallePedido
