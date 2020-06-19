@@ -25,17 +25,11 @@ class PedidoFilter(filters.FilterSet):
 	fecha_solicitud = filters.CharFilter(lookup_expr='icontains')
 	estado = filters.CharFilter(lookup_expr='icontains')
 	nit = filters.CharFilter(lookup_expr='icontains')
+	usuario__username = filters.CharFilter(lookup_expr='icontains')
 
 	class Meta:
 		model = EncabezadoPedido
-		fields = ['nombre_factura', 'estado', 'nit', 'fecha_solicitud' ]
-
-	def get_queryset(self):
-		"""
-		Retorna pedidos del usuario autenticado
-		"""
-		user = self.request.user
-		return EncabezadoPedido.objects.filter(usuario=user)
+		fields = ['nombre_factura', 'estado', 'nit', 'fecha_solicitud' , 'usuario__username']
 
 class PedidoList(generics.ListCreateAPIView):
 	"""
@@ -47,13 +41,6 @@ class PedidoList(generics.ListCreateAPIView):
 	filterset_class = PedidoFilter
 	authentication_classes = [TokenAuthentication, SessionAuthentication]
 
-	def get_queryset(self):
-		"""
-		Retorna pedidos del usuario autenticado
-		"""
-		user = self.request.user
-		return EncabezadoPedido.objects.filter(usuario=user)
-
 class PedidoEstadoUpdate(generics.UpdateAPIView):
 	"""
 		Utiliza patch para actualizar solo el estado
@@ -63,10 +50,23 @@ class PedidoEstadoUpdate(generics.UpdateAPIView):
 	permission_classes = [IsAuthenticated]
 	authentication_classes = [TokenAuthentication, SessionAuthentication]
 
+class DetallePedidoFilter(filters.FilterSet):
+	"""
+		Filtro para pedidos
+	"""
+	pedido = filters.CharFilter(lookup_expr='icontains')
+
+	class Meta:
+		model = DetallePedido
+		fields = ['pedido']
 
 class PedidoDetalle(generics.ListCreateAPIView):
     queryset = DetallePedido.objects.all()
-    serializer_class = DetallePedido2Serializer2
+    serializer_class = DetallePedidoSerializer
+    permission_classes = [IsAuthenticated]
+    filterset_class = DetallePedidoFilter
+	authentication_classes = [TokenAuthentication, SessionAuthentication]
+
 
 class PedidoDetalle2(generics.RetrieveUpdateDestroyAPIView):
 	"""
@@ -74,6 +74,8 @@ class PedidoDetalle2(generics.RetrieveUpdateDestroyAPIView):
 	"""
 	queryset = DetallePedido.objects.all()
 	serializer_class = DetallePedidoSerializer
+	permission_classes = [IsAuthenticated]
+	authentication_classes = [TokenAuthentication, SessionAuthentication]
 
 
 #-------------- PRODUCTOS -----------------#
@@ -96,4 +98,12 @@ class ProductoList(generics.ListAPIView):
 	serializer_class = ProductoSerializer
 	permission_classes = [IsAuthenticated]
 	filterset_class = ProductoFilter
+	authentication_classes = [TokenAuthentication, SessionAuthentication]
+
+########################## Categoria ##########################
+class CategoriaList(generics.ListAPIView)
+
+	queryset = Categoria.objects.all()
+	serializer_class = CategoriaSerializer
+	permission_classes = [IsAuthenticated]
 	authentication_classes = [TokenAuthentication, SessionAuthentication]

@@ -19,4 +19,7 @@ urlpatterns = [
 	#productos
 	path('productos/', ProductoList.as_view(), name='productos'),
 
+	#categorias
+	path('categorias/', CategoriaList.as_view(), name='categorias'),	
+
 ]

@@ -9,12 +9,13 @@ from rest_framework import serializers
 
 ##########################Detalle Pedidos##########################
 
-class DetallePedidoSerializer(serializers.ModelSerializer):		
+class DetallePedidoSerializer(serializers.ModelSerializer):	
+	pedido = serializers.PrimaryKeyRelatedField(queryset=EncabezadoPedido.objects.all())	
 	producto = serializers.PrimaryKeyRelatedField(queryset=Producto.objects.all())
 
 	class Meta:
 		model = DetallePedido
-		fields = ['pk', 'producto', 'cantidad','precio_individual']
+		fields = ['pk', 'pedido', 'producto', 'cantidad','precio_individual']
 
 class DetallePedido2Serializer2(serializers.ModelSerializer):		
 	pedido = serializers.PrimaryKeyRelatedField(queryset=EncabezadoPedido.objects.all())
