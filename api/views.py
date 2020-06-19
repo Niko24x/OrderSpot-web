@@ -68,7 +68,7 @@ class PedidoEstadoUpdate(generics.UpdateAPIView):
 		serializer = PedidoSerializer(model_object, data=request.data, partial=True) # set partial=True to update a data partially
 		if serializer.is_valid():
 			serializer.save()
-			return JsonResponse(serializer.data, status=201)
+			return JsonResponse(serializer.data, safe=False, status=201)
 		return JsonResponse(data="wrong parameters", status=400)
 
 class PedidoDetalle(generics.ListCreateAPIView):
