@@ -22,13 +22,13 @@ class PedidoFilter(filters.FilterSet):
 		Filtro para pedidos
 	"""
 	nombre_factura = filters.CharFilter(lookup_expr='icontains')
-	#fecha_solicitud = filters.CharFilter(lookup_expr='icontains') pendiente
+	fecha_solicitud = filters.CharFilter(lookup_expr='icontains')
 	estado = filters.CharFilter(lookup_expr='icontains')
 	nit = filters.CharFilter(lookup_expr='icontains')
 
 	class Meta:
 		model = EncabezadoPedido
-		fields = ['nombre_factura', 'estado', 'nit' ]
+		fields = ['nombre_factura', 'estado', 'nit', 'fecha_solicitud' ]
 
 	def get_queryset(self):
 		"""
