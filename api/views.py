@@ -101,7 +101,7 @@ class ProductoList(generics.ListAPIView):
 	authentication_classes = [TokenAuthentication, SessionAuthentication]
 
 ########################## Categoria ##########################
-class CategoriaList(generics.ListAPIView)
+class CategoriaList(generics.ListAPIView):
 
 	queryset = Categoria.objects.all()
 	serializer_class = CategoriaSerializer
