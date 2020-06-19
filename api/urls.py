@@ -10,7 +10,7 @@ app_name = 'api'
 urlpatterns = [
 	#pedidos
 	path('pedidos/', PedidoList.as_view(), name='pedidos'),
-	path('pedido/<pk>/', PedidoEstadoUpdate.as_view(), name='pedido_estado_update'),
+	path('pedidos/<pk>/', PedidoEstadoUpdate.as_view(), name='pedido_estado_update'),
 
 	#detalle pedidos
 	path('detallepedido/', PedidoDetalle.as_view(), name='detallepedido_cl'),

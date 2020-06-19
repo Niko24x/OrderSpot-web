@@ -16,6 +16,14 @@ class DetallePedidoSerializer(serializers.ModelSerializer):
 		model = DetallePedido
 		fields = ['pk', 'producto', 'cantidad','precio_individual']
 
+class DetallePedido2Serializer2(serializers.ModelSerializer):		
+	pedido = serializers.PrimaryKeyRelatedField(queryset=EncabezadoPedido.objects.all())
+	producto = serializers.PrimaryKeyRelatedField(queryset=Producto.objects.all())
+
+	class Meta:
+		model = DetallePedido
+		fields = ['pk', 'pedido', 'producto', 'cantidad','precio_individual']
+
 
 
 ##########################Pedidos##########################
@@ -34,19 +42,21 @@ class PedidoSerializer(serializers.ModelSerializer):
 				DetallePedido.objects.create(pedido=pedido, **detalle_data)
 		return pedido
 
+########################## Categoria ##########################
+class CategoriaSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = Categoria
+		fields = ['pk','nombre', 'slug', 'estado']
+
 
 ########################## Productos ##########################
 class ProductoSerializer(serializers.ModelSerializer):
 	#pendiente
 	#imagen = Base64ImageField()
-	categoria = serializers.SerializerMethodField()
+	categoria = CategoriaSerializer()
 
 	class Meta:
 		model = Producto
 		fields = ['pk','nombre', 'descripcion', 'precio', 'imagen', 'sku', 'categoria', 'estado']
 
-	def get_categoria(self, obj):
-		"""obj es una instancia de categoria. Retorna una lista de diccionarios"""
-		queryset = Categoria.objects.filter(pedido= obj)
-		return [DetallePedidoSerializer(m).data for m in queryset]
 

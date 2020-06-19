@@ -73,7 +73,7 @@ class PedidoEstadoUpdate(generics.UpdateAPIView):
 
 class PedidoDetalle(generics.ListCreateAPIView):
     queryset = DetallePedido.objects.all()
-    serializer_class = DetallePedidoSerializer
+    serializer_class = DetallePedido2Serializer2
 
 class PedidoDetalle2(generics.RetrieveUpdateDestroyAPIView):
 	"""
