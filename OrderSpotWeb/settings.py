@@ -47,9 +47,11 @@ INSTALLED_APPS = [
 	'rest_framework.authtoken',
 	'simple_history',
 	'django_filters',
+	'corsheaders',
 ]
 
 MIDDLEWARE = [
+	'corsheaders.middleware.CorsMiddleware',
 	'django.middleware.security.SecurityMiddleware',
 	'django.contrib.sessions.middleware.SessionMiddleware',
 	'django.middleware.common.CommonMiddleware',
@@ -180,3 +182,4 @@ if PRODUCTION:
 	pymysql.version_info = (1, 4, 2, "final", 0)
 	pymysql.install_as_MySQLdb()
 
+CORS_ORIGIN_ALLOW_ALL = True
