@@ -22,14 +22,19 @@ class PedidoFilter(filters.FilterSet):
 		Filtro para pedidos
 	"""
 	nombre_factura = filters.CharFilter(lookup_expr='icontains')
-	fecha_solicitud = filters.CharFilter(lookup_expr='icontains')
-	estado = filters.CharFilter(lookup_expr='icontains')
+	fecha_solicitud = filters.CharFilter(lookup_expr='exact')
+	estado = filters.CharFilter(lookup_expr='exact')
 	nit = filters.CharFilter(lookup_expr='icontains')
-	usuario__username = filters.CharFilter(lookup_expr='icontains')
+	usuario__username = filters.CharFilter(lookup_expr='exact')
+	pk = filters.CharFilter(lookup_expr='exact')
+
+
 
 	class Meta:
 		model = EncabezadoPedido
-		fields = ['nombre_factura', 'estado', 'nit', 'fecha_solicitud' , 'usuario__username']
+		fields = ['pk','nombre_factura', 'estado', 'nit', 'fecha_solicitud' , 'usuario__username']
+
+	
 
 class PedidoList(generics.ListCreateAPIView):
 	"""
