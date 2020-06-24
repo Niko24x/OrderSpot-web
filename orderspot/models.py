@@ -23,6 +23,20 @@ class Categoria(models.Model):
 		self.slug = slugify(self.nombre)
 		super(Categoria, self).save(*args, **kwargs)
 
+
+class TipoMedida(models.Model):
+	Activo = "Activo"
+	Inactivo = "Inactivo"
+	ESTADO_CHOICES = (
+		(Activo, "Activo"),
+		(Inactivo, "Inactivo"),
+	)
+	tipo = models.CharField(max_length=150)
+	estado = models.CharField(max_length=10, choices=ESTADO_CHOICES, default='Activo')
+
+	def __str__(self):
+		return self.tipo
+
 def imgProductos(instance, filename):
 		return 'imagenes/{0}/{1}/{2}'.format(str(instance.categoria), instance.nombre, filename)
 
@@ -40,6 +54,7 @@ class Producto(models.Model):
 	imagen = models.ImageField(upload_to=imgProductos)
 	sku = models.CharField(max_length=30)
 	categoria = models.ForeignKey(Categoria, on_delete=models.PROTECT)
+	#tipo = models.ForeignKey(TipoMedida, on_delete=models.PROTECT)
 	estado = models.CharField(max_length=10, choices=ESTADO_CHOICES, default='Activo')
 
 	def __str__(self):
