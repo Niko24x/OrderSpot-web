@@ -6,6 +6,11 @@ from orderspot.models import *
 
 #3rd
 from rest_framework import serializers
+########################## Categoria ##########################
+class CategoriaSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = Categoria
+		fields = ['pk','nombre', 'slug', 'estado']
 
 ########################## Productos ##########################
 class ProductoSerializer(serializers.ModelSerializer):
@@ -43,9 +48,3 @@ class PedidoSerializer(serializers.ModelSerializer):
 			for detalle_data in detalles_data:
 				DetallePedido.objects.create(pedido=pedido, **detalle_data)
 		return pedido
-
-########################## Categoria ##########################
-class CategoriaSerializer(serializers.ModelSerializer):
-	class Meta:
-		model = Categoria
-		fields = ['pk','nombre', 'slug', 'estado']
