@@ -54,7 +54,7 @@ class Producto(models.Model):
 	imagen = models.ImageField(upload_to=imgProductos)
 	sku = models.CharField(max_length=30)
 	categoria = models.ForeignKey(Categoria, on_delete=models.PROTECT)
-	#tipo = models.ForeignKey(TipoMedida, on_delete=models.PROTECT)
+	tipo = models.ForeignKey(TipoMedida, on_delete=models.PROTECT)
 	estado = models.CharField(max_length=10, choices=ESTADO_CHOICES, default='Activo')
 
 	def __str__(self):

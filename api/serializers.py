@@ -7,11 +7,22 @@ from orderspot.models import *
 #3rd
 from rest_framework import serializers
 
+########################## Productos ##########################
+class ProductoSerializer(serializers.ModelSerializer):
+	#pendiente
+	#imagen = Base64ImageField()
+	categoria = CategoriaSerializer()
+	tipo = serializers.StringRelatedField()
+
+	class Meta:
+		model = Producto
+		fields = ['pk','nombre', 'descripcion', 'precio', 'tipo' ,'imagen', 'sku', 'categoria', 'estado']
+
 ##########################Detalle Pedidos##########################
 
 class DetallePedidoSerializer(serializers.ModelSerializer):	
 	pedido = serializers.PrimaryKeyRelatedField(queryset=EncabezadoPedido.objects.all())	
-	producto = serializers.PrimaryKeyRelatedField(queryset=Producto.objects.all())
+	producto = ProductoSerializer()
 
 	class Meta:
 		model = DetallePedido
@@ -38,16 +49,3 @@ class CategoriaSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Categoria
 		fields = ['pk','nombre', 'slug', 'estado']
-
-
-########################## Productos ##########################
-class ProductoSerializer(serializers.ModelSerializer):
-	#pendiente
-	#imagen = Base64ImageField()
-	categoria = CategoriaSerializer()
-
-	class Meta:
-		model = Producto
-		fields = ['pk','nombre', 'descripcion', 'precio', 'imagen', 'sku', 'categoria', 'estado']
-
-
