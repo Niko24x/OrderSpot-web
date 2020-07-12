@@ -145,9 +145,22 @@ class DepartamentoList(generics.ListAPIView):
 	authentication_classes = [TokenAuthentication, SessionAuthentication]
 
 ########################## Municipio ##########################
+
+class MunicipioFilter(filters.FilterSet):
+	"""
+		Filtro para productos
+	"""
+	departamento__nombre = filters.CharFilter(lookup_expr='exact')
+	departamento = filters.NumberFilter()
+
+	class Meta:
+		model = Municipio
+		fields = ['departamento', 'departamento__nombre']
+
 class MunicipioList(generics.ListAPIView):
 
 	queryset = Municipio.objects.all()
 	serializer_class = MunicipioSerializer
 	permission_classes = [IsAuthenticated]
+	filterset_class = MunicipioFilter
 	authentication_classes = [TokenAuthentication, SessionAuthentication]

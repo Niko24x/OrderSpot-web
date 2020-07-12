@@ -26,12 +26,13 @@ class ProductoSerializer(serializers.ModelSerializer):
 ##########################Detalle Pedidos##########################
 
 class DetallePedidoSerializer(serializers.ModelSerializer):	
-	pedido = serializers.PrimaryKeyRelatedField(queryset=EncabezadoPedido.objects.all())	
-	producto = ProductoSerializer()
+	pedido = serializers.PrimaryKeyRelatedField(queryset=EncabezadoPedido.objects.all(), required=False)	
+	producto_detalle = ProductoSerializer(source='producto', read_only=True)
+	producto = serializers.PrimaryKeyRelatedField(queryset=Producto.objects.all())
 
 	class Meta:
 		model = DetallePedido
-		fields = ['pk', 'pedido', 'producto', 'cantidad','precio_individual']
+		fields = ['pk', 'pedido', 'producto', 'producto_detalle', 'cantidad', 'precio_individual']
 
 ##########################Pedidos##########################
 class PedidoSerializer(serializers.ModelSerializer):
