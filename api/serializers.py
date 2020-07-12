@@ -35,7 +35,7 @@ class DetallePedidoSerializer(serializers.ModelSerializer):
 
 ##########################Pedidos##########################
 class PedidoSerializer(serializers.ModelSerializer):
-	detalles = DetallePedidoSerializer(many=True)
+	detalles = DetallePedidoSerializer(many=True, required=False, default=None)
 	class Meta:
 		model = EncabezadoPedido
 		fields = ['pk', 'usuario', 'fecha_solicitud', 'fecha_entrega', 'municipio', 'municipio', 'nit', 'nombre_factura', 'direccion_factura', 'direccion_entrega', 'telefono_cliente', 'nombre_cliente', 'codigo_de_entrada', 'notas_adicionales', 'estado', 'detalles']
@@ -48,3 +48,16 @@ class PedidoSerializer(serializers.ModelSerializer):
 			for detalle_data in detalles_data:
 				DetallePedido.objects.create(pedido=pedido, **detalle_data)
 		return pedido
+
+class DepartamentoSerializer(serializers.ModelSerializer):	
+
+	class Meta:
+		model = Departamento
+		fields = ['pk', 'nombre', 'estado']
+
+class MunicipioSerializer(serializers.ModelSerializer):	
+	departamento = DepartamentoSerializer(many=False)
+
+	class Meta:
+		model = Municipio
+		fields = ['pk', 'nombre', 'departamento', 'estado']

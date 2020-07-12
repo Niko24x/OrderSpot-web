@@ -11,10 +11,32 @@ from rest_framework import generics
 from django_filters import rest_framework as filters
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.authentication import SessionAuthentication, TokenAuthentication
+from rest_framework.authtoken.views import ObtainAuthToken
+from rest_framework.authtoken.models import Token
+from rest_framework.response import Response
 
 # Create your views here.
 
 ################ API ##########################
+
+
+class CustomAuthToken(ObtainAuthToken):
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.serializer_class(data=request.data,
+                                           context={'request': request})
+        serializer.is_valid(raise_exception=True)
+        user = serializer.validated_data['user']
+        token, created = Token.objects.get_or_create(user=user)
+        return Response({
+            'token': token.key,
+            'user_id': user.pk,
+            'nombre': user.first_name+user.last_name
+
+        })
+
+
+
 #-------------- PEDIDOS -----------------#
 
 class PedidoFilter(filters.FilterSet):
@@ -110,5 +132,22 @@ class CategoriaList(generics.ListAPIView):
 
 	queryset = Categoria.objects.all()
 	serializer_class = CategoriaSerializer
+	permission_classes = [IsAuthenticated]
+	authentication_classes = [TokenAuthentication, SessionAuthentication]
+
+
+########################## Departamentno ##########################
+class DepartamentoList(generics.ListAPIView):
+
+	queryset = Departamento.objects.all()
+	serializer_class = DepartamentoSerializer
+	permission_classes = [IsAuthenticated]
+	authentication_classes = [TokenAuthentication, SessionAuthentication]
+
+########################## Municipio ##########################
+class MunicipioList(generics.ListAPIView):
+
+	queryset = Municipio.objects.all()
+	serializer_class = MunicipioSerializer
 	permission_classes = [IsAuthenticated]
 	authentication_classes = [TokenAuthentication, SessionAuthentication]

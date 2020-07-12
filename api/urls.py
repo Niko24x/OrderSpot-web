@@ -20,6 +20,12 @@ urlpatterns = [
 	path('productos/', ProductoList.as_view(), name='productos'),
 
 	#categorias
-	path('categorias/', CategoriaList.as_view(), name='categorias'),	
+	path('categorias/', CategoriaList.as_view(), name='categorias'),
+
+	#categorias
+	path('departamentos/', DepartamentoList.as_view(), name='departamentos'),
+
+	#categorias
+	path('municipios/', MunicipioList.as_view(), name='municipios'),	
 
 ]

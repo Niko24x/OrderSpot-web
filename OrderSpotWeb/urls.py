@@ -17,13 +17,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.views.generic import TemplateView
-
-#3rd
-from rest_framework.authtoken import views
+from api.views import CustomAuthToken
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/token-auth/', views.obtain_auth_token),
+    path('api/token-auth/', CustomAuthToken.as_view()),
     path('api/v1/', include('api.urls', namespace='api')),
     path('', TemplateView.as_view(template_name="index.html")),
 ]
