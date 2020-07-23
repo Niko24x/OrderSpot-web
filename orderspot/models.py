@@ -110,7 +110,7 @@ class EncabezadoPedido(models.Model):
 	nombre_factura = models.CharField(max_length=150)
 	direccion_factura = models.CharField(max_length=150)
 	direccion_entrega = models.CharField(max_length=150)
-	telefono_cliente = models.PositiveIntegerField()
+	telefono_cliente = models.IntegerField()
 	nombre_cliente = models.CharField(max_length=150)
 	codigo_de_entrada = models.CharField(max_length=150)
 	notas_adicionales = models.TextField()
