@@ -2,6 +2,7 @@ from django.db import models
 from django.utils.text import slugify
 from django.contrib.auth.models import AbstractUser
 from django.conf import settings
+from simple_history.models import HistoricalRecords
 
 # Create your models here.
 class Categoria(models.Model):
@@ -15,6 +16,7 @@ class Categoria(models.Model):
 	nombre = models.CharField(max_length=150)
 	slug = models.SlugField(unique=True)
 	estado = models.CharField(max_length=10, choices=ESTADO_CHOICES, default='Activo')
+	history = HistoricalRecords()
 
 	def __str__(self):
 		return self.nombre
@@ -33,6 +35,7 @@ class TipoMedida(models.Model):
 	)
 	tipo = models.CharField(max_length=150)
 	estado = models.CharField(max_length=10, choices=ESTADO_CHOICES, default='Activo')
+	history = HistoricalRecords()
 
 	def __str__(self):
 		return self.tipo
@@ -56,6 +59,7 @@ class Producto(models.Model):
 	categoria = models.ForeignKey(Categoria, on_delete=models.PROTECT)
 	tipo = models.ForeignKey(TipoMedida, on_delete=models.PROTECT)
 	estado = models.CharField(max_length=10, choices=ESTADO_CHOICES, default='Activo')
+	history = HistoricalRecords()
 
 	def __str__(self):
 		return self.nombre
@@ -70,6 +74,7 @@ class Departamento(models.Model):
 
 	nombre = models.CharField(max_length=150)
 	estado = models.CharField(max_length=10, choices=ESTADO_CHOICES)
+	history = HistoricalRecords()
 	
 	def __str__(self):
 		return self.nombre
@@ -85,6 +90,7 @@ class Municipio(models.Model):
 	nombre = models.CharField(max_length=150)
 	departamento = models.ForeignKey(Departamento, on_delete=models.PROTECT)
 	estado = models.CharField(max_length=10, choices=ESTADO_CHOICES, default='Activo')
+	history = HistoricalRecords()
 	
 	def __str__(self):
 		return self.nombre
@@ -115,6 +121,7 @@ class EncabezadoPedido(models.Model):
 	codigo_de_entrada = models.CharField(max_length=150)
 	notas_adicionales = models.TextField()
 	estado = models.CharField(max_length=10, choices=ESTADO_CHOICES, default='Activo')
+	history = HistoricalRecords()
 
 	def __str__(self):
 		return (str(self.pk) + " - " + str(self.usuario) + " - " + self.nit + " - " + str(self.fecha_solicitud))
@@ -124,6 +131,7 @@ class DetallePedido(models.Model):
 	producto = models.ForeignKey(Producto, related_name='productos', on_delete=models.PROTECT)
 	cantidad = models.DecimalField(max_digits=7, decimal_places=0)
 	precio_individual = models.DecimalField(max_digits=7, decimal_places=2)
+	history = HistoricalRecords()
 
 	def __str__(self):
 		return (str(self.pk) + " - " + str(self.pedido.pk) +  " - " + str(self.producto))

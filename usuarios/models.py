@@ -15,7 +15,7 @@ class Usuario(AbstractUser):
 		(vendedor, 'Vendedor'),
 	)
 
-	telefono = models.PositiveSmallIntegerField(default=1) 
+	telefono = models.IntegerField(default=1) 
 	tipo_perfil = models.CharField(max_length=15, choices=TIPO_PERFIL, default = 'Vendedor')
 	history = HistoricalRecords()
 
